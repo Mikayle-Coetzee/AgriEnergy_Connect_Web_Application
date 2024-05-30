@@ -28,8 +28,9 @@ namespace ST10023767_PROG
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<IPostRepository, PostRepository>();
             builder.Services.AddScoped<IResourceRepository, ResourceRepository>();
+            builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 
-             builder.Services.AddScoped<WorkerClass>();
+            builder.Services.AddScoped<WorkerClass>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();

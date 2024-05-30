@@ -222,10 +222,6 @@ else
                             <td>@farmer.Username</td>
                             <td>
                                 <div style="display: flex; justify-content: space-between;">
-                                    <form asp-action="EditFarmer" method="post">
-                                        <input type="hidden" name="id" value="@farmer.FarmerID" />
-                                        <button class="btn btn-warning btn-sm">Edit</button>
-                                    </form>
                                     <form asp-action="DeleteFarmer" method="post" >
                                         <input type="hidden" name="id" value="@farmer.FarmerID" />
                                         <button class="btn btn-danger" onclick="confirmDelete(@farmer.FarmerID)">Delete</button>
@@ -286,7 +282,7 @@ else
         function confirmDelete(farmerId) {
             if (confirm("Are you sure you want to delete this farmer?")) {
                 $.ajax({
-                    url: '@Url.Action("DeleteFarmer", "Farmer")',
+                    url: '@Url.Action("AddFarmer", "Farmer")',
                     type: 'POST',
                 data: { id: farmerId },
                     success: function () {

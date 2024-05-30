@@ -25,34 +25,82 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
         _context.SaveChanges();
     }
 
-    public List<User> GetPendingFarmers()
+    public List<RegisterViewModel> GetPendingFarmers()
     {
-        return this._dbSet.Where(f => f.UserTypeID == 1 && f.RequestApproved == "false").ToList();
+        return this._dbSet.Where(f => f.UserTypeID == 1 && f.RequestApproved == "false")
+            .Select(u => new RegisterViewModel
+            {
+                Id = u.Id,
+                Name = u.Name,
+                Surname = u.Surname,
+                Email = u.Email,
+                UserTypeID = u.UserTypeID,
+                IDNumber = u.IDNumber,
+                Username = u.Username,
+                EmployeeID = u.EmployeeID,
+                JobTitle = u.JobTitle,
+                FarmLocation = u.FarmLocation,
+                FarmType = u.FarmType
+            })
+            .ToList();
     }
 
-    public User GetFarmerById(int id)
+    public RegisterViewModel GetFarmerById(int id)
     {
-        return this._dbSet.FirstOrDefault(u => u.Id == id && u.UserTypeID == 1);
+        var user = this._dbSet.FirstOrDefault(u => u.Id == id && u.UserTypeID == 1);
+        if (user == null) return null;
+
+        return new RegisterViewModel
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Surname = user.Surname,
+            Email = user.Email,
+            UserTypeID = user.UserTypeID,
+            IDNumber = user.IDNumber,
+            Username = user.Username,
+            EmployeeID = user.EmployeeID,
+            JobTitle = user.JobTitle,
+            FarmLocation = user.FarmLocation,
+            FarmType = user.FarmType
+        };
     }
 
-    public void UpdateFarmer(User user)
+    public void UpdateFarmer(RegisterViewModel user)
     {
-        this._dbSet.Update(user);
-        _context.SaveChanges();
+        //this._dbSet.Update(user);
+        //_context.SaveChanges();
     }
 
 
-    public void DeleteFarmer(User user)
+    public void DeleteFarmer(RegisterViewModel user)
     {
-        var existingFarmer = GetFarmerById(user.Id);
-        if (existingFarmer == null)
+        var existingUser = _context.Users.FirstOrDefault(p => p.Id == user.Id);
+        if (existingUser == null)
             return;
 
-        this._dbSet.Remove(existingFarmer);
+        _context.Users.Remove(existingUser);
         _context.SaveChanges();
     }
-    public List<User> GetAllFarmers() 
+
+    public List<RegisterViewModel> GetAllFarmers()
     {
-        return this._dbSet.Where(f => f.UserTypeID == 1).ToList();
+        return _context.Users
+            .Where(u => u.UserTypeID == 1)
+            .Select(u => new RegisterViewModel
+            {
+                Id = u.Id,
+                Name = u.Name,
+                Surname = u.Surname,
+                Email = u.Email,
+                UserTypeID = u.UserTypeID,
+                IDNumber = u.IDNumber,
+                Username = u.Username,
+                EmployeeID = u.EmployeeID,
+                JobTitle = u.JobTitle,
+                FarmLocation = u.FarmLocation,
+                FarmType = u.FarmType
+            })
+            .ToList();
     }
 }

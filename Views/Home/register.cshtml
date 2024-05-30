@@ -87,6 +87,7 @@
                 </select>
             </div>
 
+
             <!-- Common fields for both farmer and employee -->
             <label></label>
             <div class="form-group d-flex justify-content-between">
@@ -131,7 +132,7 @@
             </div>
 
 
-            <div id="farmerFields">
+            <div id="farmerFields" style="display: block;">
                 <!-- Farmer-specific fields -->
                 <div class="form-group d-flex justify-content-between">
 
@@ -206,19 +207,21 @@
                 window.history.back();
             }
 
-            document.addEventListener("DOMContentLoaded", function () {
-                document.getElementById("userTypeID").addEventListener("change", function () {
-                    var userType = this.value;
-                    if (userType === "1") {
-                        document.getElementById("farmerFields").style.display = "block";
-                        document.getElementById("employeeFields").style.display = "none";
-                    } else if (userType === "2") {
-                        document.getElementById("farmerFields").style.display = "none";
-                        document.getElementById("employeeFields").style.display = "block";
-                    }
+            
+                document.addEventListener("DOMContentLoaded", function () {
+                    document.getElementById("userTypeID").addEventListener("change", function () {
+                        var userType = this.value;
+                        if (userType === "1") {
+                            document.getElementById("farmerFields").style.display = "block";
+                            document.getElementById("employeeFields").style.display = "none";
+                        } else if (userType === "2") {
+                            document.getElementById("farmerFields").style.display = "none";
+                            document.getElementById("employeeFields").style.display = "block";
+                        }
+                    });
                 });
-            });
         </script>
+
     </div>
 
 

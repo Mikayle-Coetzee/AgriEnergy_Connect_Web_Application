@@ -223,15 +223,6 @@ namespace ST10023767_PROG.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        public IActionResult ProjectCollaboration()
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

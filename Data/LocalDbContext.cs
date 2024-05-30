@@ -33,6 +33,10 @@ public partial class LocalDbContext : DbContext
     public DbSet<Product> Products { get; set; }
     public DbSet<ChatMessage> Collaboration { get; set; }
     public DbSet<Resource> Resources { get; set; }
+    public DbSet<Project> Projects { get; set; }
+    public DbSet<Comment> Comments { get; set; }
+
+
 
     /// <summary>
     /// 
@@ -64,6 +68,14 @@ public partial class LocalDbContext : DbContext
             entity.HasKey(e => e.Id);
         });
         modelBuilder.Entity<Resource>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+        });
+        modelBuilder.Entity<Project>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+        });
+        modelBuilder.Entity<Comment>(entity =>
         {
             entity.HasKey(e => e.Id);
         });

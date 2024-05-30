@@ -8,10 +8,10 @@ namespace ST10023767_PROG.Repositories.Interfaces
         User GetUserByUsername(string username);
         bool UserExists(string username);
         void Add(User user);
-        List<User> GetPendingFarmers();
-        User GetFarmerById(int id);
-        void UpdateFarmer(User user);
-        void DeleteFarmer(User user);
-        List<User> GetAllFarmers();
+        List<RegisterViewModel> GetPendingFarmers();
+        RegisterViewModel GetFarmerById(int id);
+        void UpdateFarmer(RegisterViewModel user);
+        void DeleteFarmer(RegisterViewModel user);
+        List<RegisterViewModel> GetAllFarmers();
     }
 }
