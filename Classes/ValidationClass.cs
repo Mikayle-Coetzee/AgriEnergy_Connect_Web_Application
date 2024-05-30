@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace NewClassLibrary.Classes
+namespace ST10023767_PROG.Classes
 {
     /// <summary>
     /// This class is used for user input validation.

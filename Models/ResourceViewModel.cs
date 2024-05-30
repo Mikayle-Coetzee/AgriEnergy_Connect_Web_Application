@@ -16,20 +16,21 @@ namespace ST10023767_PROG.Models
 
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
-
         [Required(ErrorMessage = "Description is required")]
+
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Image is required")]
         public byte[] Image { get; set; }
 
-        public byte[]? Video { get; set; }
+        public byte[] Video { get; set; }
 
         [Required(ErrorMessage = "Type is required")]
         public string Type { get; set; }
 
         [Required(ErrorMessage = "Category is required")]
         public string Category { get; set; }
+      
         [Required(ErrorMessage = "Duration is required")]
         public TimeSpan Duration { get; set; }
 

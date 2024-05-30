@@ -23,7 +23,7 @@ namespace ST10023767_PROG.Controllers
         /// <summary>
         /// Validation class instance for string and password validation.
         /// </summary>
-        private readonly NewClassLibrary.Classes.ValidationClass validate = new();
+        private readonly ValidationClass validate = new();
 
         /// <summary>
         /// Worker class instance for handling business logic.

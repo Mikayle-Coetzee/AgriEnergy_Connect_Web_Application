@@ -32,7 +32,7 @@ namespace ST10023767_PROG.Controllers
         /// <summary>
         /// 
         /// </summary>
-        private readonly NewClassLibrary.Classes.ValidationClass _validate = new();
+        private readonly ValidationClass _validate = new();
 
         /// <summary>
         /// 

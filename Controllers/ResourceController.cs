@@ -1,10 +1,4 @@
-﻿#region Documentation Header
-// Author: Mikayle Coetzee (ST10023767)
-// Course: PROG7311 POE 2023
-// Part: 2
-#endregion
-
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ST10023767_PROG.Data;
 using ST10023767_PROG.Models;
@@ -12,6 +6,8 @@ using ST10023767_PROG.Repositories.Interfaces;
 using System;
 using System.IO;
 using System.Linq;
+using MediaToolkit;
+using MediaToolkit.Model;
 
 namespace ST10023767_PROG.Controllers
 {
@@ -26,9 +22,8 @@ namespace ST10023767_PROG.Controllers
 
         public IActionResult EducationalResource()
         {
-            var resources = _resourceRepository.GetAll(); 
+            var resources = _resourceRepository.GetAll();
             var resourceViewModels = resources.Select(resource => new ResourceViewModel(resource)).ToList();
-
             return View(resourceViewModels);
         }
 
@@ -36,38 +31,57 @@ namespace ST10023767_PROG.Controllers
         public IActionResult UploadResource(ResourceViewModel resourceViewModel, IFormFile image, IFormFile video)
         {
 
-                var resource = new Resource
+            TimeSpan videoDuration = TimeSpan.Zero;
+        
+            if (video != null)
+            {
+                var filePath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    Name = resourceViewModel.Name,
-                    Description = resourceViewModel.Description,
-                    Type = resourceViewModel.Type,
-                    Category = resourceViewModel.Category,
-                    Duration = resourceViewModel.Duration 
-                };
-
-                if (image != null)
-                {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        image.CopyTo(memoryStream);
-                        resource.Image = memoryStream.ToArray();
-                    }
+                    video.CopyTo(stream);
                 }
 
-                if (video != null)
+                var inputFile = new MediaFile { Filename = filePath };
+                using (var engine = new Engine())
                 {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        video.CopyTo(memoryStream);
-                        resource.Video = memoryStream.ToArray();
-                    }
+                    engine.GetMetadata(inputFile);
+                    videoDuration = inputFile.Metadata.Duration;
                 }
 
-                _resourceRepository.Create(resource);
-                _resourceRepository.SaveChanges();
+                System.IO.File.Delete(filePath);
+            }
 
-                return RedirectToAction("EducationalResource");
-           
+            var resource = new Resource
+            {
+                Name = resourceViewModel.Name,
+                Description = resourceViewModel.Description,
+                Type = resourceViewModel.Type,
+                Category = resourceViewModel.Category,
+                Duration = videoDuration,
+            };
+
+            if (image != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    image.CopyTo(memoryStream);
+                    resource.Image = memoryStream.ToArray();
+                }
+            }
+
+            if (video != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    video.CopyTo(memoryStream);
+                    resource.Video = memoryStream.ToArray();
+                }
+            }
+
+            _resourceRepository.Create(resource);
+            _resourceRepository.SaveChanges();
+
+            return RedirectToAction("EducationalResource");
         }
 
     }
