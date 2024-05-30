@@ -30,7 +30,6 @@ namespace ST10023767_PROG.Models
 
         [Required(ErrorMessage = "Category is required")]
         public string Category { get; set; }
-
         [Required(ErrorMessage = "Duration is required")]
         public TimeSpan Duration { get; set; }
 
