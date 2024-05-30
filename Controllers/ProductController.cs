@@ -48,6 +48,8 @@ namespace ST10023767_PROG.Controllers
             model.Username = ServiceLocator.MainViewModel.CurrentUser.Username;
 
             _productRepository.AddProduct(model);
+            TempData["SuccessMessage"] = "Product added successfully.";
+
 
             return RedirectToAction("ViewMyProducts");
         }
@@ -80,56 +82,7 @@ namespace ST10023767_PROG.Controllers
             return View();
         }
 
-        [HttpGet]
-        public IActionResult EditProduct(int id)
-        {
-            var product = _productRepository.GetProductById(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
 
-            var model = new ProductsViewModel
-            {
-                Id = product.Id,
-                ProductName = product.ProductName,
-                ProductDescription = product.ProductDescription,
-                Category = product.Category,
-                Price = product.Price,
-                QuantityAvaliable = product.QuantityAvaliable,
-                Avaliability = product.Avaliability,
-                ProducationDate = product.ProducationDate
-            };
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public IActionResult EditProduct(ProductsViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var product = _productRepository.GetProductById(model.Id);
-                if (product == null)
-                {
-                    return NotFound();
-                }
-
-                // Update the product properties
-                product.ProductName = model.ProductName;
-                product.ProductDescription = model.ProductDescription;
-                product.Category = model.Category;
-                product.Price = model.Price;
-                product.QuantityAvaliable = model.QuantityAvaliable;
-                product.Avaliability = model.Avaliability;
-                product.ProducationDate = model.ProducationDate;
-
-                _productRepository.UpdateProduct(product);
-                return RedirectToAction("ViewMyProducts");
-            }
-
-            return View(model);
-        }
 
         [HttpPost]
         public IActionResult ApplyFilters(string username, DateTime? startDate, DateTime? endDate, string category)
@@ -166,10 +119,16 @@ namespace ST10023767_PROG.Controllers
             var product = _productRepository.GetProductById(id);
             if (product == null)
             {
+
+                TempData["ErrorMessage"] = "Product can not be deleted";
+
                 return NotFound(); 
             }
 
             _productRepository.DeleteProduct(product);
+            TempData["SuccessMessage"] = "Product deleted successfully.";
+
+
             return Ok(); 
         }
     }

@@ -81,13 +81,13 @@ namespace ST10023767_PROG.Controllers
                     if (ServiceLocator.MainViewModel.CurrentUser.RequestApproved == "true" ||
                         ServiceLocator.MainViewModel.CurrentUser.UserTypeID == 2)
                     {
+                        TempData["SuccessMessage"] = "Welcome!";
                         return RedirectToAction("Index", "Home");
                     }
                     else
                     {
                         TempData["ErrorMessage"] = $"No user found with the username '{model.Username}'. Wait for an employee to approve your sign up request.";
                     }
-
                 }
                 else if (loginResult == 1)
                 {
@@ -98,9 +98,14 @@ namespace ST10023767_PROG.Controllers
                     TempData["ErrorMessage"] = "Incorrect password.";
                 }
             }
+            else
+            {
+                TempData["ErrorMessage"] = "Invalid username or password.";
+            }
 
             return RedirectToAction("Login", "Home");
         }
+
 
 
         /// <summary>
@@ -131,15 +136,14 @@ namespace ST10023767_PROG.Controllers
                 validate.Validate_Password(model.Password) &&
                 (model.Password == model.ConfirmPassword))
             {
-                if (model.UserTypeID == 1) 
-                { 
+                if (model.UserTypeID == 1)
+                {
                     model.RequestApproved = "false";
                 }
                 else if (model.UserTypeID == 2)
                 {
                     model.RequestApproved = "true";
                 }
-
 
                 if (workerClass.GetUserByUsername(model.Username) == null)
                 {
@@ -148,25 +152,24 @@ namespace ST10023767_PROG.Controllers
                                         model.UserTypeID, model.Username, model.EmployeeID,
                                         model.JobTitle, model.FarmLocation, model.FarmType,
                                         model.Password, model.RequestApproved);
+                    TempData["SuccessMessage"] = "Registration successful. Please log in.";
                     return RedirectToAction("Login", "Home");
-
                 }
                 else
                 {
-                    //popup the username is already in the database
+                    TempData["ErrorMessage"] = "Username is already in use.";
                 }
-
             }
             else
             {
-                //popup the errors
 
+                TempData["ErrorMessage"] = "Invalid input. Please correct the errors and try again.";
             }
-
 
             // If validation fails, return the Register view with validation errors
             return View(model);
         }
+
 
         /// <summary>
         /// 

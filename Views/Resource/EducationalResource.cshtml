@@ -17,6 +17,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Educational Resources</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="path/to/toastr.min.css">
+    <script src="path/to/toastr.min.js"></script>
+    
     <style>
         .card-img-top {
             max-height: 200px;
@@ -205,6 +208,19 @@
                     item.style.display = display ? "block" : "none";
                 });
             }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                var errorMessage = '@TempData["ErrorMessage"]';
+                var successMessage = '@TempData["SuccessMessage"]';
+
+                if (errorMessage) {
+                    alert(errorMessage);
+                }
+
+                if (successMessage) {
+                    alert(successMessage);
+                }
+            });
         </script>
     </div>
 </body>

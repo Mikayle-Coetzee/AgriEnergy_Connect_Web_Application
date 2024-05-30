@@ -40,6 +40,8 @@ namespace ST10023767_PROG.Controllers
             model.WrittenByUsername = ServiceLocator.MainViewModel.CurrentUser.Username; 
 
             _projectRepository.AddProject(model);
+            TempData["SuccessMessage"] = "Project added successfully.";
+
 
             return RedirectToAction("ProjectCollaboration"); // Redirect back to the main page to see the new post
         }

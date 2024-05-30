@@ -80,6 +80,8 @@ namespace ST10023767_PROG.Controllers
 
             _resourceRepository.Create(resource);
             _resourceRepository.SaveChanges();
+            TempData["SuccessMessage"] = "Resource added successfully.";
+
 
             return RedirectToAction("EducationalResource");
         }

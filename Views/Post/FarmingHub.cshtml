@@ -7,6 +7,8 @@
 
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="path/to/toastr.min.css">
+    <script src="path/to/toastr.min.js"></script>
     <style>
         .card-img-top {
             max-height: 200px;
@@ -158,6 +160,20 @@
                 date1.getDate() === date2.getDate()
             );
         }
+
+        
+    document.addEventListener("DOMContentLoaded", function () {
+    var errorMessage = '@TempData["ErrorMessage"]';
+    var successMessage = '@TempData["SuccessMessage"]';
+
+    if (errorMessage) {
+    alert(errorMessage);
+    }
+
+    if (successMessage) {
+    alert(successMessage);
+    }
+    });
     </script>
 
 

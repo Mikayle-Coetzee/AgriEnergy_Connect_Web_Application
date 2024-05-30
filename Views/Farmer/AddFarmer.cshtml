@@ -9,6 +9,10 @@
 
 @model ST10023767_PROG.Models.FarmerViewModel
 
+<head>
+<link rel="stylesheet" href="path/to/toastr.min.css">
+<script src="path/to/toastr.min.js"></script>
+</head>
 <img src="~/Images/add_farmer_banner.png" style="width: 100%; margin-top: 25px; margin-bottom:5px">
 
 <form id="farmerForm" asp-action="AddOrEditFarmer" method="post">
@@ -278,6 +282,13 @@ else
             });
     }
 
+    document.addEventListener("DOMContentLoaded", function () {
+        var successMessage = '@TempData["SuccessMessage"]';
+
+        if (successMessage) {
+            toastr.success(successMessage);
+        }
+    });
 
         function confirmDelete(farmerId) {
             if (confirm("Are you sure you want to delete this farmer?")) {

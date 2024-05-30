@@ -88,6 +88,8 @@ namespace ST10023767_PROG.Controllers
                 }).ToList()
             };
 
+            TempData["SuccessMessage"] = "Farmer added successfully.";
+
             return View(model);
         }
 
@@ -124,6 +126,8 @@ namespace ST10023767_PROG.Controllers
                         _workerClass.AddFarmer(model.Name, model.Surname, model.Email, model.IDNumber,
                                             1, model.Username, model.FarmLocation, model.FarmType,
                                             model.Password);
+
+                        TempData["SuccessMessage"] = "Farmer added successfully."; 
 
                         return RedirectToAction("AddFarmer", "Farmer");
                     }
@@ -203,10 +207,14 @@ namespace ST10023767_PROG.Controllers
             var farmer = _userRepository.GetFarmerById(id);
             if (farmer == null)
             {
+
+                TempData["ErrorMessage"] = "Farmer can not be deleted.";
+
                 return NotFound(); 
             }
 
             _userRepository.DeleteFarmer(farmer);
+            TempData["SuccessMessage"] = "Farmer deleted successfully.";
             return Ok();
         }
 

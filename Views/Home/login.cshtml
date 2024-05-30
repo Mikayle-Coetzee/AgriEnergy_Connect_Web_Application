@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ST10023767_POE.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="path/to/toastr.min.css">
+    <script src="path/to/toastr.min.js"></script>
 
     <style type="text/css">
         html, body {
@@ -99,7 +101,22 @@
             function goBack() {
                 window.history.back();
             }
+
+            
+                document.addEventListener("DOMContentLoaded", function () {
+                    var errorMessage = '@TempData["ErrorMessage"]';
+                    var successMessage = '@TempData["SuccessMessage"]';
+
+                    if (errorMessage) {
+                        alert(errorMessage);
+                    }
+
+                    if (successMessage) {
+                        alert(successMessage);
+                    }
+                });
         </script>
+
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

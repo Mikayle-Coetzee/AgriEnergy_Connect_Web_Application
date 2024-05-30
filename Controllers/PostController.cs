@@ -39,8 +39,10 @@ namespace ST10023767_PROG.Controllers
             model.WrittenByUsername = ServiceLocator.MainViewModel.CurrentUser.Username; 
 
             _postRepository.AddPost(model);
+            TempData["SuccessMessage"] = "Post added successfully.";
 
-            return RedirectToAction("FarmingHub"); // Redirect back to the main page to see the new post
+
+            return RedirectToAction("FarmingHub"); 
         }
 
         [HttpGet]
