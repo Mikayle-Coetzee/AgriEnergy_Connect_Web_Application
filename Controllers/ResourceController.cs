@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿#region Documentation Header
+// Author: Mikayle Coetzee (ST10023767)
+// Course: PROG7311 POE 2024
+// Part: 2
+#endregion
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ST10023767_PROG.Data;
 using ST10023767_PROG.Models;

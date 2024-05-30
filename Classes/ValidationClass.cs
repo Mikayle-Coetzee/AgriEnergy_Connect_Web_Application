@@ -1,4 +1,10 @@
-﻿using System;
+﻿#region Documentation Header
+// Author: Mikayle Coetzee (ST10023767)
+// Course: PROG7311 POE 2024
+// Part: 2
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
