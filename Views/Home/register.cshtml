@@ -1,0 +1,229 @@
+﻿@*  Documentation Header
+    Author: Mikayle Coetzee (ST10023767)
+    Course: PROG7311 POE 2023
+    Part: 2                              *@
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = null;
+}
+
+@model ST10023767_PROG.Models.RegisterViewModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ST10023767_POE.styles.css" asp-append-version="true" />
+
+    <style type="text/css">
+        html, body {
+            background-image: url(/Images/signup_image.jpg);
+            height: 100%;
+            margin: 0;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: white;
+            position: relative;
+        }
+
+        .content {
+            text-align: center;
+            max-width: 900px;
+            width: 600px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .footer {
+            padding: 10px;
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" asp-area="" asp-controller="Home" asp-action="Login">Agri-Energy Connect</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar-->
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <a asp-area="" asp-controller="Home" asp-action="LogIn" class="btn btn-secondary my-2 my-sm-0" role="button" style="margin-right: 10px">Sign In</a>
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <div class="content">
+        <h1 class="display-4">Sign Up</h1>
+        <hr />
+        <form id="signupForm" action="/Home/Register" method="post" style="max-width: 400px; margin: 0 auto;">
+            <div class="form-group">
+                <select class="form-control" id="userTypeID" name="UserTypeID">
+                    <option value="1" selected>Farmer</option>
+                    <option value="2">Employee</option>
+                </select>
+            </div>
+
+            <!-- Common fields for both farmer and employee -->
+            <label></label>
+            <div class="form-group d-flex justify-content-between">
+
+                <div style="width: 48%;">
+                    <input asp-for="Name" class="form-control mb-2" placeholder="Name" required autofocus>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div style="width: 48%;">
+                    <input asp-for="Surname" class="form-control mb-2" placeholder="Surname" required>
+                    <span asp-validation-for="Surname" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input asp-for="IDNumber" class="form-control mb-2" placeholder="ID Number" required>
+                <span asp-validation-for="IDNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group d-flex justify-content-between">
+                <div style="width: 48%;">
+                    <input asp-for="Email" type="email" class="form-control mb-2" placeholder="Email" required>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div style="width: 48%;">
+                    <input asp-for="ConfirmEmail" type="email" class="form-control mb-2" placeholder="Confirm Email" required>
+                    <span asp-validation-for="ConfirmEmail" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input asp-for="Username" class="form-control mb-2" placeholder="Username" required>
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group d-flex justify-content-between">
+                <div style="width: 48%;">
+                    <input asp-for="Password" type="password" class="form-control mb-2" placeholder="Password" required>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div style="width: 48%;">
+                    <input asp-for="ConfirmPassword" type="password" class="form-control mb-2" placeholder="Confirm Password" required>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div id="farmerFields">
+                <!-- Farmer-specific fields -->
+                <div class="form-group d-flex justify-content-between">
+
+                    <div style="width: 48%;">
+                        <input asp-for="FarmLocation" class="form-control mb-2" placeholder="Farm Location" required>
+                        <span asp-validation-for="FarmLocation" class="text-danger"></span>
+                    </div>
+                    <div style="width: 48%;">
+                        <select asp-for="FarmType" class="form-control mb-2" required>
+                            <option value="">Select Farm Type</option>
+                            <option value="crop">Crop</option>
+                            <option value="livestock">Livestock</option>
+                            <option value="subsistence">Subsistence farming</option>
+                            <option value="dairy">Dairy farming</option>
+                            <option value="commercial">Commercial farming</option>
+                            <option value="organic">Organic farming</option>
+                            <option value="dry">Dry farming</option>
+                            <option value="wetland">Wetland farming</option>
+                            <option value="aquaculture">Aquaculture</option>
+                            <option value="arable">Arable farming</option>
+                            <option value="cooperative">Cooperative farming</option>
+                            <option value="family">Family farming</option>
+                            <option value="ley">Ley farming</option>
+                            <option value="nomadic">Nomadic farming</option>
+                            <option value="poultry">Poultry farming</option>
+                            <option value="apiary">Apiary (Beekeeping)</option>
+                            <option value="flower">Flower farming</option>
+                            <option value="pastoralism">Pastoralism</option>
+                            <option value="sedentary">Sedentary farming</option>
+                            <option value="artisanal">Artisanal farming</option>
+                            <option value="crop_rotation">Crop rotation</option>
+                            <option value="mixed">Mixed farming</option>
+                            <option value="traditional_extensive">Traditional extensive farming</option>
+                            <option value="vineyard">Vineyard (Grape farming)</option>
+                            <option value="grain">Grain farming</option>
+                            <option value="agriculture">Agriculture (Broad term covering all farming practices)</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <span asp-validation-for="FarmType" class="text-danger"></span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="employeeFields" style="display: none;">
+                <!-- Employee-specific fields -->
+                <div class="form-group d-flex justify-content-between">
+                    <div style="width: 48%;">
+                        <input asp-for="EmployeeID" class="form-control mb-2" placeholder="Employee ID" required>
+                        <span asp-validation-for="EmployeeID" class="text-danger"></span>
+                    </div>
+                    <div style="width: 48%;">
+                        <input asp-for="JobTitle" class="form-control mb-2" placeholder="Job Title" required>
+                        <span asp-validation-for="JobTitle" class="text-danger"></span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <button onclick="goBack()" class="btn btn-primary" style="width:47%; margin-right: 10px;">Back</button>
+                <span style="margin-left: 10px;"></span>
+                <button type="submit" id="signupButton" class="btn btn-primary float-end" style="width:47%">Sign Up</button>
+
+            </div>
+        </form>
+
+        <p></p>
+
+        <script>
+            function goBack() {
+                window.history.back();
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                document.getElementById("userTypeID").addEventListener("change", function () {
+                    var userType = this.value;
+                    if (userType === "1") {
+                        document.getElementById("farmerFields").style.display = "block";
+                        document.getElementById("employeeFields").style.display = "none";
+                    } else if (userType === "2") {
+                        document.getElementById("farmerFields").style.display = "none";
+                        document.getElementById("employeeFields").style.display = "block";
+                    }
+                });
+            });
+        </script>
+    </div>
+
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

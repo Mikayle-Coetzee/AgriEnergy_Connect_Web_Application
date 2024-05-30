@@ -1,0 +1,309 @@
+﻿@*  Documentation Header
+    Author: Mikayle Coetzee (ST10023767)
+    Course: PROG7311 POE 2023
+    Part: 2                              *@
+
+@{
+    ViewData["Title"] = "Add Farmer";
+}
+
+@model ST10023767_PROG.Models.FarmerViewModel
+
+<img src="~/Images/add_farmer_banner.png" style="width: 100%; margin-top: 25px; margin-bottom:5px">
+
+<form id="farmerForm" asp-action="AddOrEditFarmer" method="post">
+    <div class="form-group d-flex justify-content-between">
+        <div style="width: 49%;">
+        <input asp-for="FarmerID" type="hidden" />
+        <input asp-for="Name" class="form-control mb-2" placeholder="Name" required>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+        <div style="width: 49%;">
+            <input asp-for="Surname" class="form-control mb-2" placeholder="Surname" required>
+        <span asp-validation-for="Surname" class="text-danger"></span>
+    </div>
+    </div>
+
+    <div class="form-group d-flex justify-content-between">
+
+        <div style="width: 49%;">
+            <input asp-for="IDNumber" class="form-control mb-2" placeholder="ID Number" required>
+        <span asp-validation-for="IDNumber" class="text-danger"></span>
+    </div>
+
+        <div style="width: 49%;">
+            <input asp-for="Username" class="form-control mb-2" placeholder="Username" required>
+        <span asp-validation-for="Username" class="text-danger"></span>
+    </div>
+    </div>
+
+    <div class="form-group d-flex justify-content-between">
+
+        <div style="width: 49%;">
+            <input asp-for="Email" type="email" class="form-control mb-2" placeholder="Email" required>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+        <div style="width: 49%;">
+            <input asp-for="ConfirmEmail" type="email" class="form-control mb-2" placeholder="Confirm Email" required>
+        <span asp-validation-for="ConfirmEmail" class="text-danger"></span>
+    </div>
+    </div>
+
+    <div class="form-group d-flex justify-content-between">
+
+        <div style="width: 49%;">
+        <input asp-for="FarmLocation" class="form-control mb-2" placeholder="Farm Location" required>
+        <span asp-validation-for="FarmLocation" class="text-danger"></span>
+    </div>
+        <div style="width: 49%;">
+            <select asp-for="FarmType" class="form-control mb-2" required>
+            <option value="">Select Farm Type</option>
+            <option value="crop">Crop</option>
+            <option value="livestock">Livestock</option>
+            <option value="subsistence">Subsistence farming</option>
+            <option value="dairy">Dairy farming</option>
+            <option value="commercial">Commercial farming</option>
+            <option value="organic">Organic farming</option>
+            <option value="dry">Dry farming</option>
+            <option value="wetland">Wetland farming</option>
+            <option value="aquaculture">Aquaculture</option>
+            <option value="arable">Arable farming</option>
+            <option value="cooperative">Cooperative farming</option>
+            <option value="family">Family farming</option>
+            <option value="ley">Ley farming</option>
+            <option value="nomadic">Nomadic farming</option>
+            <option value="poultry">Poultry farming</option>
+            <option value="apiary">Apiary (Beekeeping)</option>
+            <option value="flower">Flower farming</option>
+            <option value="pastoralism">Pastoralism</option>
+            <option value="sedentary">Sedentary farming</option>
+            <option value="artisanal">Artisanal farming</option>
+            <option value="crop_rotation">Crop rotation</option>
+            <option value="mixed">Mixed farming</option>
+            <option value="traditional_extensive">Traditional extensive farming</option>
+            <option value="vineyard">Vineyard (Grape farming)</option>
+            <option value="grain">Grain farming</option>
+            <option value="agriculture">Agriculture (Broad term covering all farming practices)</option>
+            <option value="other">Other</option>
+        </select>
+        <span asp-validation-for="FarmType" class="text-danger"></span>
+    </div>
+    </div>
+
+    <div class="form-group d-flex justify-content-between">
+
+        <div style="width: 49%;">
+        <input asp-for="Password" type="password" class="form-control mb-2" placeholder="Password" required>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+        <div style="width: 49%;">
+            <input asp-for="ConfirmPassword" type="password" class="form-control mb-2" placeholder="Confirm Password" required>
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" id="btnAddFarmer" class="btn btn-primary">Add Farmer</button>
+        <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button>
+    </div>
+    @Html.AntiForgeryToken()
+</form>
+
+<img src="~/Images/pending_farmers_banner.png" style="width: 100%; margin-top: 25px; margin-bottom:5px">
+
+@if (Model.PendingFarmers != null && Model.PendingFarmers.Any())
+{
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Pending Farmers
+        </div>
+        <div class="table-responsive p-2">
+            <table id="pendingFarmersTable" class="display">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Email</th>
+                        <th>Farm Location</th>
+                        <th>Farm Type</th>
+                        <th>Username</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Email</th>
+                        <th>Farm Location</th>
+                        <th>Farm Type</th>
+                        <th>Username</th>
+                        <th>Actions</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (var farmer in Model.PendingFarmers)
+                    {
+                        <tr>
+                            <td>@farmer.Name</td>
+                            <td>@farmer.Surname</td>
+                            <td>@farmer.Email</td>
+                            <td>@farmer.FarmLocation</td>
+                            <td>@farmer.FarmType</td>
+                            <td>@farmer.Username</td>
+                            <td >
+                                <div style="display: flex; justify-content: space-between;">
+                                    <form asp-action="ApproveFarmer" method="post" >
+                                        <input type="hidden" name="id" value="@farmer.FarmerID" />
+                                        <button class="btn btn-warning btn-sm" >Approve</button>
+                                    </form>
+                                    <form asp-action="DeleteFarmer" method="post" >
+                                        <input type="hidden" name="id" value="@farmer.FarmerID" />
+                                        <button class="btn btn-danger btn-sm" onclick="deleteFarmer(@farmer.FarmerID)">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <label></label>
+    <p>No pending farmers found.</p>
+}
+
+<img src="~/Images/all_farmers_banner.png" style="width: 100%; margin-top: 25px; margin-bottom:5px">
+
+@if (Model.AllFarmers != null && Model.AllFarmers.Any())
+{
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            All Farmers
+        </div>
+        <div class="table-responsive p-2">
+            <table id="allFarmersTable" class="display">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Email</th>
+                        <th>Farm Location</th>
+                        <th>Farm Type</th>
+                        <th>Username</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Email</th>
+                        <th>Farm Location</th>
+                        <th>Farm Type</th>
+                        <th>Username</th>
+                        <th>Actions</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (var farmer in Model.AllFarmers)
+                    {
+                        <tr>
+                            <td>@farmer.Name</td>
+                            <td>@farmer.Surname</td>
+                            <td>@farmer.Email</td>
+                            <td>@farmer.FarmLocation</td>
+                            <td>@farmer.FarmType</td>
+                            <td>@farmer.Username</td>
+                            <td>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <form asp-action="EditFarmer" method="post">
+                                        <input type="hidden" name="id" value="@farmer.FarmerID" />
+                                        <button class="btn btn-warning btn-sm">Edit</button>
+                                    </form>
+                                    <form asp-action="DeleteFarmer" method="post" >
+                                        <input type="hidden" name="id" value="@farmer.FarmerID" />
+                                        <button class="btn btn-danger" onclick="confirmDelete(@farmer.FarmerID)">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <label></label>
+    <p>No farmers found.</p>
+}
+
+<script>
+    $(document).ready(function() {
+        $('#pendingFarmersTable').DataTable();
+        $('#allFarmersTable').DataTable();
+    });
+
+    function approveFarmer(farmerID) {
+        fetch(`/Farmers/ApproveFarmer/${farmerID}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': '@Html.AntiForgeryToken()'
+            }
+        }).then(response => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                alert('Failed to approve farmer.');
+            }
+        });
+    }
+
+    function editFarmer(farmerID) {
+        fetch(`/Farmers/GetFarmer/${farmerID}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('FarmerID').value = data.farmerID;
+                document.getElementById('Name').value = data.name;
+                document.getElementById('Surname').value = data.surname;
+                document.getElementById('IDNumber').value = data.idNumber;
+                document.getElementById('Email').value = data.email;
+                document.getElementById('ConfirmEmail').value = data.email;
+                document.getElementById('FarmLocation').value = data.farmLocation;
+                document.getElementById('FarmType').value = data.farmType;
+            });
+    }
+
+
+        function confirmDelete(farmerId) {
+            if (confirm("Are you sure you want to delete this farmer?")) {
+                $.ajax({
+                    url: '@Url.Action("DeleteFarmer", "Farmer")',
+                    type: 'POST',
+                data: { id: farmerId },
+                    success: function () {
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+        }
+
+    function resetForm() {
+        document.getElementById('farmerForm').reset();
+    }
+
+    document.getElementById("btnAddFarmer").addEventListener("click", function () {
+        document.getElementById("farmerForm").submit();
+    });
+</script>

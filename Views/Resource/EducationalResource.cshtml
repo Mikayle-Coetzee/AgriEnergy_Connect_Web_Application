@@ -1,0 +1,212 @@
+﻿@*  Documentation Header
+    Author: Mikayle Coetzee (ST10023767)
+    Course: PROG7311 POE 2023
+    Part: 2                              *@
+
+@model List<ST10023767_PROG.Models.ResourceViewModel>
+
+@using ST10023767_PROG.Classes
+
+@{
+    var userType = WorkerClass.GetCurrentUserType();
+    var currentUser = WorkerClass.GetCurrentUser();
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Resources</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .card-img-top {
+            max-height: 200px;
+            object-fit: cover;
+        }
+
+        .post-card {
+            margin-bottom: 20px;
+        }
+
+        .forum-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-organic {
+            background-color: #d9f2d9; /* light green */
+        }
+
+        .category-water {
+            background-color: #d9eaf2; /* light blue */
+        }
+
+        .category-health {
+            background-color: #f2f2d9; /* light yellow */
+        }
+
+        .category-other {
+            background-color: #f2e1d9; /* light orange */
+        }
+    </style>
+</head>
+<body>
+    <div>
+        @if (userType == 2)
+        {
+            <img src="~/Images/educational_resources_banner.png" style="width: 100%; margin-top: 25px; margin-bottom:20px">
+            <!-- Resource Form -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form asp-action="UploadResource" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" name="Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" name="Description" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group d-flex justify-content-between">
+                            <div style="width: 48%;">
+                                <label for="type">Type</label>
+                                <select class="form-control" id="type" name="Type" required>
+                                    <option value="Course">Course</option>
+                                    <option value="Webinar">Webinar</option>
+                                    <option value="Workshop">Workshop</option>
+                                </select>
+                            </div>
+                            <div style="width: 48%;">
+                                <label for="category">Category</label>
+                                <select class="form-control" id="category" name="Category" required>
+                                    <option value="Organic">Organic</option>
+                                    <option value="Water">Water</option>
+                                    <option value="Health">Health</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group d-flex justify-content-between">
+                            <div style="width: 48%;">
+                                <label for="image">Upload Image</label>
+                                <input type="file" class="form-control-file" id="image" name="Image" required>
+                            </div>
+                            <div style="width: 48%;">
+                                <label for="video">Upload Video</label>
+                                <input type="file" class="form-control-file" id="video" name="Video" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </form>
+                </div>
+            </div>
+        }
+
+        <img src="~/Images/all_available_resources_banner.png" style="width: 100%;  margin-top: 25px; margin-bottom:10px">
+
+        <!-- Filtering System -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <label for="categoryFilter">Filter by Category:</label>
+                <select class="form-control" id="categoryFilter" onchange="filterPosts()">
+                    <option value="">All</option>
+                    <option value="Organic">Organic</option>
+                    <option value="Water">Water</option>
+                    <option value="Health">Health</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="userFilter">Filter by Name:</label>
+                <input type="text" class="form-control" id="userFilter" placeholder="Enter username" onkeyup="filterPosts()">
+            </div>
+            <div class="col-md-4">
+                <label for="dateFilter">Filter by Type:</label>
+                <input type="date" class="form-control" id="dateFilter" onchange="filterPosts()">
+            </div>
+        </div>
+
+        <!-- Display Resources -->
+        <div class="row">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var resourceViewModel in Model)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="data:image;base64,@(Convert.ToBase64String(resourceViewModel.Image))" class="card-img-top" alt="Resource Image">
+                            <div class="card-body">
+                                <h5 class="card-title">@resourceViewModel.Name</h5>
+                                <p class="card-text">@resourceViewModel.Description</p>
+                                <p class="card-text"><small class="text-muted">@resourceViewModel.Type - @resourceViewModel.Category</small></p>
+                            </div>
+
+                            @if (resourceViewModel.Video != null)
+                            {
+                                <div class="card-footer">
+                                    <a href="data:video/mp4;base64,@(Convert.ToBase64String(resourceViewModel.Video))" class="btn btn-primary" download="@resourceViewModel.Name" style="align-content:center">Download Video</a>
+                                    <label></label>
+                                    <video class="rounded-video" width="320" height="240" controls>
+                                        <source src="data:video/mp4;base64,@(Convert.ToBase64String(resourceViewModel.Video))" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No resources available.</p>
+            }
+        </div>
+        <script>
+
+            function filterPosts() {
+                var categoryFilter = document.getElementById("categoryFilter").value.toLowerCase();
+                var userFilter = document.getElementById("userFilter").value.toLowerCase();
+                var dateFilter = document.getElementById("dateFilter").value;
+                var postItems = document.querySelectorAll(".post-item");
+
+                postItems.forEach(function (item) {
+                    var category = item.getAttribute("data-category");
+                    var username = item.getAttribute("data-username");
+                    var dateString = item.querySelector('.text-muted').innerText.split("on ")[1];
+                    var postDate = new Date(dateString);
+                    postDate.setHours(0, 0, 0, 0);
+                    var selectedDate = dateFilter ? new Date(dateFilter) : null;
+                    var display = true;
+
+                    if (categoryFilter !== "" && category !== categoryFilter) {
+                        display = false;
+                    }
+                    if (userFilter !== "" && !username.includes(userFilter)) {
+                        display = false;
+                    }
+                    if (dateFilter !== "" && !isSameDate(postDate, selectedDate)) {
+                        display = false;
+                    }
+
+                    item.style.display = display ? "block" : "none";
+                });
+            }
+
+            function isSameDate(date1, date2) {
+                if (!date1 || !date2) {
+                    return false;
+                }
+                return (
+                    date1.getFullYear() === date2.getFullYear() &&
+                    date1.getMonth() === date2.getMonth() &&
+                    date1.getDate() === date2.getDate()
+                );
+            }
+        </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+﻿@*  Documentation Header
+    Author: Mikayle Coetzee (ST10023767)
+    Course: PROG7311 POE 2023
+    Part: 2                              *@
+
+@{
+    ViewData["Title"] = "About Us";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ST10023767_POE.styles.css" asp-append-version="true" />
+
+    <style type="text/css">
+        html, body {
+            background-image: url(/Images/signup_image.jpg);
+            height: 100%;
+            margin: 0;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: white;
+            position: relative;
+        }
+
+        .content {
+            text-align: center;
+            max-width: 95%;
+            width: 90%;
+           
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .footer {
+            padding: 10px;
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" asp-area="" asp-controller="Home" asp-action="Login">Agri-Energy Connect</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar-->
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <a asp-area="" asp-controller="Home" asp-action="LogIn" class="btn btn-secondary my-2 my-sm-0" role="button" style="margin-right: 10px">Sign In</a>
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <div class="content">
+        <h1>About Agri-Energy Connect</h1>
+        <p>Welcome to Agri-Energy Connect, your premier destination for fostering sustainability and innovation in South Africa's agricultural sector.</p>
+        <h2>Our Vision</h2>
+        <p>At Agri-Energy Connect, we envision a future where sustainable agricultural practices are seamlessly integrated with cutting-edge green energy solutions.
+            We believe that by harnessing the power of technology and collaboration, we can revolutionize the way farming is done, ensuring a more environmentally 
+            conscious and economically viable future.</p>
+        <h2>Why Agri-Energy Connect?</h2>
+        <p>
+            In today's dynamic landscape, the imperative for sustainable agriculture and renewable energy solutions has never been more pressing. 
+            Agri-Energy Connect stands at the forefront of this movement, serving as a catalyst for change. Our platform provides a digital ecosystem where farmers,
+            green energy experts, and enthusiasts converge to share knowledge, resources, and ideas, driving forward the transition to a greener,
+            more sustainable agricultural industry.
+        </p>
+   
+        <button onclick="goBack()" class="btn btn-primary">Back</button>
+
+        <script>
+            function goBack() {
+                window.history.back();
+            }
+        </script>
+
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

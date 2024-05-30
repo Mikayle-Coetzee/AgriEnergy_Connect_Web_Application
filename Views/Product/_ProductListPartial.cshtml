@@ -1,0 +1,36 @@
+﻿@model List<ST10023767_PROG.Models.ProductsViewModel>
+
+<div class="row">
+    @if (Model != null && Model.Any())
+    {
+        @foreach (var product in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="data:image;base64,@(Convert.ToBase64String(product.Image))" class="card-img-top" alt="Product Image" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">@product.ProductName</h5>
+                        <p class="card-text"><strong>Category:</strong> @product.Category</p>
+                        <p class="card-text"><strong>Price: R</strong> @product.Price</p>
+                        <p class="card-text"><strong>Quantity Available:</strong> @product.QuantityAvaliable</p>
+                        <p class="card-text"><strong>Availability:</strong> @product.Avaliability</p>
+                        <p class="card-text"><strong>Production Date:</strong> @product.ProducationDate.ToShortDateString()</p>
+                        <p class="card-text"><strong>Uploaded Date:</strong> @product.UploadedDate.ToShortDateString()</p>
+                        <p class="card-text">@product.ProductDescription</p>
+                        <p class="card-title"><strong>Farmer:</strong> @product.Username</p>
+                        <div class="btn-group" role="group" aria-label="Product Actions">
+                            <a href="@Url.Action("EditProduct", "Product", new { id = product.Id })" class="btn btn-primary">Edit</a>
+                            <button class="btn btn-danger" onclick="confirmDelete(@product.Id)">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-md-12">
+            <p>No products found.</p>
+        </div>
+    }
+</div>

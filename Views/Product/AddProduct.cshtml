@@ -1,0 +1,102 @@
+﻿@*  Documentation Header
+    Author: Mikayle Coetzee (ST10023767)
+    Course: PROG7311 POE 2023
+    Part: 2                              *@
+
+@model ST10023767_PROG.Models.ProductsViewModel
+
+<img src="~/Images/add_product_banner.png" style="width: 100%; margin-top: 25px; margin-bottom:20px">
+
+    <a href="@Url.Action("ViewMyProducts", "Product")" class="btn btn-primary" style="width: 100%">View My Products</a>
+
+<form asp-action="AddProduct" method="post" enctype="multipart/form-data">
+    <label></label>
+
+    <div class="form-group d-flex justify-content-between">
+        <div style="width: 49%;">
+        <label asp-for="ProductName"></label>
+            <input asp-for="ProductName" class="form-control" required />
+        <span asp-validation-for="ProductName" class="text-danger"></span>
+        </div>
+        <div style="width: 49%;">
+            <label asp-for="Category"></label>
+            <select class="form-control" id="Category" name="Category">
+                <option value="dairy">Dairy</option>
+                <option value="meat">Meat</option>
+                <option value="solar">Solar</option>
+                <option value="wind">Wind</option>
+                <option value="grain">Grain</option>
+                <option value="vegetables">Vegetables</option>
+                <option value="fruits">Fruits</option>
+                <option value="nuts">Nuts</option>
+                <option value="herbs">Herbs</option>
+                <option value="flowers">Flowers</option>
+                <option value="honey">Honey</option>
+                <option value="biofuel">Biofuel</option>
+                <option value="fibre">Fibre</option>
+                <option value="mushrooms">Mushrooms</option>
+                <option value="other">Other</option>
+            </select>
+            <span asp-validation-for="Category" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group d-flex justify-content-between">
+
+        <div style="width: 49%;">
+            <label asp-for="Price"></label>
+            <input asp-for="Price" class="form-control" required />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <div style="width: 49%;">
+            <label asp-for="QuantityAvaliable"></label>
+            <input asp-for="QuantityAvaliable" class="form-control" required />
+        <span asp-validation-for="QuantityAvaliable" class="text-danger"></span>
+    </div>
+    </div>
+
+    <div class="form-group d-flex justify-content-between">
+
+        <div style="width: 49%;">
+        <label asp-for="Avaliability"></label>
+            <select class="form-control" id="Avaliability" name="Avaliability">
+                <option value="In Stock">In Stock</option>
+                <option value="Out Of Stock">Out Of Stock</option>
+            </select>
+        <span asp-validation-for="Avaliability" class="text-danger"></span>
+    </div>
+        <div style="width: 49%;">
+            <label asp-for="ProducationDate"></label>
+            <input asp-for="ProducationDate" class="form-control" type="date" required />
+        <span asp-validation-for="ProducationDate" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group d-flex justify-content-between">
+
+        <div style="width: 49%;">
+        <label asp-for="ProductDescription"></label>
+            <input asp-for="ProductDescription" class="form-control" required />
+        <span asp-validation-for="ProductDescription" class="text-danger"></span>
+    </div>
+        <div style="width: 49%;">
+            <label asp-for="Image">Product Image</label>
+        <div class="custom-file">
+                <input asp-for="Image" class="custom-file-input" type="file" id="customFile" required>
+        </div>
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+    </div>
+
+
+    <label></label>
+    <label></label>
+    <div>
+        <button type="submit" class="btn btn-primary" style="width:100%">Add Product</button>
+    </div>
+</form>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+

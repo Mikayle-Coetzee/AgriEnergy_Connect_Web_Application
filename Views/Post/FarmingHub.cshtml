@@ -1,0 +1,164 @@
+﻿@*  Documentation Header
+    Author: Mikayle Coetzee (ST10023767)
+    Course: PROG7311 POE 2023
+    Part: 2                              *@
+
+@model List<ST10023767_PROG.Models.PostViewModel>
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .card-img-top {
+            max-height: 200px;
+            object-fit: cover;
+        }
+
+        .post-card {
+            margin-bottom: 20px;
+        }
+
+        .forum-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-organic {
+            background-color: #d9f2d9; /* light green */
+        }
+
+        .category-water {
+            background-color: #d9eaf2; /* light blue */
+        }
+
+        .category-health {
+            background-color: #f2f2d9; /* light yellow */
+        }
+
+        .category-other {
+            background-color: #f2e1d9; /* light orange */
+        }
+    </style>
+</head>
+<body>
+        <img src="~/Images/farming_hub_banner.png" style="width: 100%; margin-top: 25px; margin-bottom:20px" >
+        <!-- Post Form -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h3 class="card-title">Share a Best Practice</h3>
+                <form asp-action="AddPost" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="messageContent">Message</label>
+                        <textarea class="form-control" id="messageContent" name="MessageContent" rows="3" required></textarea>
+                    </div>
+                <div class="form-group d-flex justify-content-between align-items-end">
+                    <div style="width: 30%;">
+                        <label for="messageCategory">Category</label>
+                        <select class="form-control" id="messageCategory" name="MessageCategory" required>
+                            <option value="Organic">Organic</option>
+                            <option value="Water">Water</option>
+                            <option value="Health">Health</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div style="width: 30%;">
+                        <label for="messageImage">Upload Image</label>
+                        <input type="file" class="form-control-file" id="messageImage" name="MessageImage" required>
+                    </div>
+                    <div style="width: 30%;" class="text-right">
+                        <button type="submit" class="btn btn-primary">Post</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+
+    <img src="~/Images/all_posts_banner.png" style="width: 100%; margin-bottom:10px">
+
+    <!-- Filtering System -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <label for="categoryFilter">Filter by Category:</label>
+            <select class="form-control" id="categoryFilter" onchange="filterPosts()">
+                <option value="">All</option>
+                <option value="Organic">Organic</option>
+                <option value="Water">Water</option>
+                <option value="Health">Health</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="userFilter">Filter by Username:</label>
+            <input type="text" class="form-control" id="userFilter" placeholder="Enter username" onkeyup="filterPosts()">
+        </div>
+        <div class="col-md-4">
+            <label for="dateFilter">Filter by Date:</label>
+            <input type="date" class="form-control" id="dateFilter" onchange="filterPosts()">
+        </div>
+    </div>
+
+
+    <!-- Posts List -->
+    <div id="postsList" class="row">
+        @foreach (var post in Model)
+        {
+            <div class="col-md-4 mb-4 post-item" data-category="@post.MessageCategory.ToLower()" data-username="@post.WrittenByUsername.ToLower()">
+                <div class="card post-card @($"category-{post.MessageCategory.ToLower()}")">
+                    @if (post.MessageImage != null)
+                    {
+                        <img src="data:image;base64,@(Convert.ToBase64String(post.MessageImage))" class="card-img-top" alt="Post Image">
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@post.MessageCategory</h5>
+                        <p class="card-text">@post.MessageContent</p>
+                        <p class="card-text"><small class="text-muted">Posted by @post.WrittenByUsername on @post.DatePublished.ToShortDateString()</small></p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <script>
+        function filterPosts() {
+            var categoryFilter = document.getElementById("categoryFilter").value.toLowerCase();
+            var userFilter = document.getElementById("userFilter").value.toLowerCase();
+            var dateFilter = document.getElementById("dateFilter").value;
+            var postItems = document.querySelectorAll(".post-item");
+
+            postItems.forEach(function (item) {
+                var category = item.getAttribute("data-category");
+                var username = item.getAttribute("data-username");
+                var dateString = item.querySelector('.text-muted').innerText.split("on ")[1];
+                var postDate = new Date(dateString);
+                postDate.setHours(0, 0, 0, 0);
+                var selectedDate = dateFilter ? new Date(dateFilter) : null;
+                var display = true;
+
+                if (categoryFilter !== "" && category !== categoryFilter) {
+                    display = false;
+                }
+                if (userFilter !== "" && !username.includes(userFilter)) {
+                    display = false;
+                }
+                if (dateFilter !== "" && !isSameDate(postDate, selectedDate)) {
+                    display = false;
+                }
+
+                item.style.display = display ? "block" : "none";
+            });
+        }
+
+        function isSameDate(date1, date2) {
+            if (!date1 || !date2) {
+                return false;
+            }
+            return (
+                date1.getFullYear() === date2.getFullYear() &&
+                date1.getMonth() === date2.getMonth() &&
+                date1.getDate() === date2.getDate()
+            );
+        }
+    </script>
+
+
+</body>
