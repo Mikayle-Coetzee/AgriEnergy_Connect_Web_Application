@@ -4,7 +4,10 @@
 // Part: 2
 #endregion
 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using ST10023767_PROG.Classes;
 using ST10023767_PROG.Data;
 using ST10023767_PROG.Repositories;
@@ -18,11 +21,14 @@ namespace ST10023767_PROG
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Configuration
+            builder.Configuration.AddJsonFile("appsettings.json");
+
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
             builder.Services.AddDbContext<LocalDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
-            //builder.Services.AddScoped(typeof(IRepository<>), typeof(RepositoryBase<>));
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IRoleRepository, RoleRepository>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
@@ -54,7 +60,6 @@ namespace ST10023767_PROG
                 pattern: "{controller=Home}/{action=Login}/{id?}");
 
             app.Run();
-
         }
     }
 }
