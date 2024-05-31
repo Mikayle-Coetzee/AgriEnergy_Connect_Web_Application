@@ -1,7 +1,7 @@
-﻿@*  Documentation Header
+﻿@* Documentation Header
     Author: Mikayle Coetzee (ST10023767)
     Course: PROG7311 POE 2023
-    Part: 2                              *@
+    Part: 2 *@
 
 @{
     ViewData["Title"] = "Register";
@@ -52,6 +52,10 @@
             color: white;
             text-align: center;
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -84,16 +88,14 @@
         <form id="signupForm" action="/Home/Register" method="post" style="max-width: 400px; margin: 0 auto;">
             <div class="form-group">
                 <select class="form-control" id="userTypeID" name="UserTypeID">
-                    <option value="1" selected>Farmer</option>
+                    <option value="1">Farmer</option>
                     <option value="2">Employee</option>
                 </select>
             </div>
 
-
             <!-- Common fields for both farmer and employee -->
             <label></label>
             <div class="form-group d-flex justify-content-between">
-
                 <div style="width: 48%;">
                     <input asp-for="Name" class="form-control mb-2" placeholder="Name" required autofocus>
                     <span asp-validation-for="Name" class="text-danger"></span>
@@ -133,17 +135,15 @@
                 </div>
             </div>
 
-
-            <div id="farmerFields" style="display: block;">
-                <!-- Farmer-specific fields -->
+            <!-- Farmer-specific fields -->
+            <div id="farmerFields" class="hidden">
                 <div class="form-group d-flex justify-content-between">
-
                     <div style="width: 48%;">
-                        <input asp-for="FarmLocation" class="form-control mb-2" placeholder="Farm Location" required>
+                        <input asp-for="FarmLocation" class="form-control mb-2" placeholder="Farm Location">
                         <span asp-validation-for="FarmLocation" class="text-danger"></span>
                     </div>
                     <div style="width: 48%;">
-                        <select asp-for="FarmType" class="form-control mb-2" required>
+                        <select asp-for="FarmType" class="form-control mb-2">
                             <option value="">Select Farm Type</option>
                             <option value="crop">Crop</option>
                             <option value="livestock">Livestock</option>
@@ -176,69 +176,69 @@
                         <span asp-validation-for="FarmType" class="text-danger"></span>
                     </div>
                 </div>
-
             </div>
 
-            <div id="employeeFields" style="display: none;">
-                <!-- Employee-specific fields -->
+            <!-- Employee-specific fields -->
+            <div id="employeeFields" class="hidden">
                 <div class="form-group d-flex justify-content-between">
                     <div style="width: 48%;">
-                        <input asp-for="EmployeeID" class="form-control mb-2" placeholder="Employee ID" required>
+                        <input asp-for="EmployeeID" class="form-control mb-2" placeholder="Employee ID">
                         <span asp-validation-for="EmployeeID" class="text-danger"></span>
                     </div>
                     <div style="width: 48%;">
-                        <input asp-for="JobTitle" class="form-control mb-2" placeholder="Job Title" required>
+                        <input asp-for="JobTitle" class="form-control mb-2" placeholder="Job Title">
                         <span asp-validation-for="JobTitle" class="text-danger"></span>
                     </div>
                 </div>
-
             </div>
 
             <div class="form-group">
-                <button onclick="goBack()" class="btn btn-primary" style="width:47%; margin-right: 10px;">Back</button>
+                <button type="button" onclick="goBack()" class="btn btn-primary" style="width:47%; margin-right: 10px;">Back</button>
                 <span style="margin-left: 10px;"></span>
-                <button type="submit" id="signupButton" class="btn btn-primary float-end" style="width:47%">Sign Up</button>
-
+                <button type="submit" class="btn btn-primary float-end" style="width:47%">Sign Up</button>
             </div>
         </form>
-
-        <p></p>
 
         <script>
             function goBack() {
                 window.history.back();
             }
 
-            
-                document.addEventListener("DOMContentLoaded", function () {
-                    document.getElementById("userTypeID").addEventListener("change", function () {
-                        var userType = this.value;
-                        if (userType === "1") {
-                            document.getElementById("farmerFields").style.display = "block";
-                            document.getElementById("employeeFields").style.display = "none";
-                        } else if (userType === "2") {
-                            document.getElementById("farmerFields").style.display = "none";
-                            document.getElementById("employeeFields").style.display = "block";
-                        }
-                    });
-                });
-                document.addEventListener("DOMContentLoaded", function () {
-                    var errorMessage = '@TempData["ErrorMessage"]';
-                    var successMessage = '@TempData["SuccessMessage"]';
+            document.addEventListener("DOMContentLoaded", function () {
+                var errorMessage = '@TempData["ErrorMessage"]';
+                var successMessage = '@TempData["SuccessMessage"]';
 
-                    if (errorMessage) {
-                        alert(errorMessage);
-                    }
+                if (errorMessage) {
+                    alert(errorMessage);
+                }
 
-                    if (successMessage) {
-                        alert(successMessage);
-                    }
+                if (successMessage) {
+                    alert(successMessage);
+                }
+
+                var userTypeSelect = document.getElementById("userTypeID");
+                userTypeSelect.addEventListener("change", function () {
+                    handleUserTypeChange(userTypeSelect.value);
                 });
+
+                handleUserTypeChange(userTypeSelect.value); // Call to set the initial state based on the default selection
+            });
+
+            // Function to handle user type change
+            function handleUserTypeChange(selectedValue) {
+                var farmerFields = document.getElementById("farmerFields");
+                var employeeFields = document.getElementById("employeeFields");
+
+                if (selectedValue === "1") {
+                    farmerFields.classList.remove("hidden");
+                    employeeFields.classList.add("hidden");
+                } else if (selectedValue === "2") {
+                    farmerFields.classList.add("hidden");
+                    employeeFields.classList.remove("hidden");
+                }
+            }
         </script>
-
     </div>
-
-
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

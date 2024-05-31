@@ -56,12 +56,6 @@ namespace ST10023767_PROG.Models
         public string Category { get; set; }
 
         /// <summary>
-        /// Resource duration.
-        /// </summary>
-        [Required(ErrorMessage = "Duration is required")]
-        public TimeSpan Duration { get; set; }
-
-        /// <summary>
         /// Default constructor.
         /// </summary>
         public ResourceViewModel() { }
@@ -79,7 +73,6 @@ namespace ST10023767_PROG.Models
             Video = resource.Video;
             Type = resource.Type;
             Category = resource.Category;
-            Duration = resource.Duration;
         }
     }
 }//★---♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫---★・。。END OF FILE 。。・★---♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫---★//

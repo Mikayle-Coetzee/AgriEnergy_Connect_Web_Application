@@ -23,6 +23,7 @@ namespace ST10023767_PROG.Controllers
         private readonly IUserRepository _userRepository;
         private readonly ValidationClass _validate = new();
         private readonly WorkerClass _workerClass;
+        private readonly IProductRepository _productRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FarmerController"/> class.
@@ -30,11 +31,12 @@ namespace ST10023767_PROG.Controllers
         /// <param name="logger">The logger.</param>
         /// <param name="userRepository">The user repository.</param>
         /// <param name="roleRepository">The role repository.</param>
-        public FarmerController(ILogger<FarmerController> logger, IUserRepository userRepository, IResourceRepository roleRepository)
+        public FarmerController(ILogger<FarmerController> logger, IUserRepository userRepository, IResourceRepository roleRepository, IProductRepository productRepository)
         {
             _logger = logger;
             _userRepository = userRepository;
             _workerClass = new WorkerClass(userRepository, roleRepository);
+            _productRepository = productRepository;
         }
 
         /// <summary>
@@ -195,13 +197,23 @@ namespace ST10023767_PROG.Controllers
             var farmer = _userRepository.GetFarmerById(id);
             if (farmer == null)
             {
-                TempData["ErrorMessage"] = "Farmer can not be deleted.";
+                TempData["ErrorMessage"] = "Farmer cannot be deleted.";
                 return NotFound();
             }
 
+            // Delete associated products
+
+            var products = _productRepository.GetProductsByUsername(farmer.Username);
+            foreach (var product in products)
+            {
+                _productRepository.DeleteProduct(product);
+            }
+
+
             _userRepository.DeleteFarmer(farmer);
-            TempData["SuccessMessage"] = "Farmer deleted successfully.";
+            TempData["SuccessMessage"] = "Farmer and associated data deleted successfully.";
             return Ok();
         }
+
     }
 }//★---♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫---★・。。END OF FILE 。。・★---♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫---★//

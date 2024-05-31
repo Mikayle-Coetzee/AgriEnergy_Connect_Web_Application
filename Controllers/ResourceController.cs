@@ -12,8 +12,6 @@ using ST10023767_PROG.Repositories.Interfaces;
 using System;
 using System.IO;
 using System.Linq;
-using MediaToolkit;
-using MediaToolkit.Model;
 
 namespace ST10023767_PROG.Controllers
 {
@@ -52,29 +50,12 @@ namespace ST10023767_PROG.Controllers
         /// <param name="video">The video file associated with the resource.</param>
         /// <returns>Redirects to the educational resources page.</returns>
         [HttpPost]
-        public IActionResult UploadResource(ResourceViewModel resourceViewModel, IFormFile image, IFormFile video)
+        public IActionResult UploadResource(ResourceViewModel resourceViewModel, IFormFile Image, IFormFile Video)
         {
-            // Initialize video duration
-            TimeSpan videoDuration = TimeSpan.Zero;
-
-            // Calculate video duration if a video file is provided
-            if (video != null)
+            if (!ModelState.IsValid)
             {
-                var filePath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    video.CopyTo(stream);
-                }
-
-                var inputFile = new MediaFile { Filename = filePath };
-                using (var engine = new Engine())
-                {
-                    engine.GetMetadata(inputFile);
-                    videoDuration = inputFile.Metadata.Duration;
-                }
-
-                // Delete temporary video file
-                System.IO.File.Delete(filePath);
+                TempData["ErrorMessage"] = "Please provide all required information.";
+                return RedirectToAction("EducationalResource");
             }
 
             // Create a new resource object
@@ -84,25 +65,24 @@ namespace ST10023767_PROG.Controllers
                 Description = resourceViewModel.Description,
                 Type = resourceViewModel.Type,
                 Category = resourceViewModel.Category,
-                Duration = videoDuration,
             };
 
             // Save image data if provided
-            if (image != null)
+            if (Image != null)
             {
                 using (var memoryStream = new MemoryStream())
                 {
-                    image.CopyTo(memoryStream);
+                    Image.CopyTo(memoryStream);
                     resource.Image = memoryStream.ToArray();
                 }
             }
 
             // Save video data if provided
-            if (video != null)
+            if (Video != null)
             {
                 using (var memoryStream = new MemoryStream())
                 {
-                    video.CopyTo(memoryStream);
+                    Video.CopyTo(memoryStream);
                     resource.Video = memoryStream.ToArray();
                 }
             }
@@ -115,5 +95,6 @@ namespace ST10023767_PROG.Controllers
             TempData["SuccessMessage"] = "Resource added successfully.";
             return RedirectToAction("EducationalResource");
         }
+
     }
 }//★---♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫---★・。。END OF FILE 。。・★---♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫---★//

@@ -8,6 +8,7 @@ using ST10023767_PROG.Data;
 using ST10023767_PROG.Models;
 using ST10023767_PROG.Repositories.Interfaces;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace ST10023767_PROG.Repositories
@@ -31,7 +32,7 @@ namespace ST10023767_PROG.Repositories
         /// <param name="comment"></param>
         public void AddComment(Comment comment)
         {
-            _context.Comments.Add(comment); // Add the comment to the Comments DbSet
+            _context.Comment.Add(comment); // Add the comment to the Comments DbSet
             _context.SaveChanges(); // Save changes to the database
         }
 
@@ -59,10 +60,27 @@ namespace ST10023767_PROG.Repositories
         /// Method to retrieve all projects from the database
         /// </summary>
         /// <returns></returns>
+        //public List<ProjectViewModel> GetAllProjects()
+        //{
+        //    // Select projects from the Projects DbSet and map them to ProjectViewModel objects
+        //    return _context.Projects
+        //        .Select(p => new ProjectViewModel
+        //        {
+        //            Id = p.Id,
+        //            ProjectContent = p.ProjectContent,
+        //            ProjectImage = p.ProjectImage,
+        //            ProjectCategory = p.ProjectCategory,
+        //            WrittenByUsername = p.WrittenByUsername,
+        //            DatePublished = p.DatePublished
+        //        })
+        //        .ToList(); // Return the projects as a list
+        //}
+
         public List<ProjectViewModel> GetAllProjects()
         {
             // Select projects from the Projects DbSet and map them to ProjectViewModel objects
             return _context.Projects
+                .Include(x => x.Comments)
                 .Select(p => new ProjectViewModel
                 {
                     Id = p.Id,
@@ -70,9 +88,17 @@ namespace ST10023767_PROG.Repositories
                     ProjectImage = p.ProjectImage,
                     ProjectCategory = p.ProjectCategory,
                     WrittenByUsername = p.WrittenByUsername,
-                    DatePublished = p.DatePublished
+                    DatePublished = p.DatePublished,
+                    Comments = p.Comments.Select(c => new CommentViewModel()
+                    {
+                        AuthorUsername = c.AuthorUsername,
+                        Content = c.Content,
+                        ProjectId = c.ProjectId
+                    }).ToList()
                 })
                 .ToList(); // Return the projects as a list
         }
+
+
     }
 }//★---♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫---★・。。END OF FILE 。。・★---♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫---★//

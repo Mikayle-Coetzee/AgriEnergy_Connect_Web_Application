@@ -39,7 +39,6 @@
                                 <p class="card-text"><strong>Uploaded Date:</strong> @product.UploadedDate.ToShortDateString()</p>
                                 <p class="card-text">@product.ProductDescription</p>
                                 <div class="btn-group" role="group" aria-label="Product Actions">
-                                    <a href="@Url.Action("EditProduct", "Product", new { id = product.Id })" class="btn btn-primary">Edit</a>
                                     <button class="btn btn-danger" onclick="confirmDelete(@product.Id)">Delete</button>
                                 </div>
                             </div>

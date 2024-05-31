@@ -66,7 +66,7 @@ public partial class LocalDbContext : DbContext
     /// <summary>
     /// Gets or sets the DbSet of comments.
     /// </summary>
-    public DbSet<Comment> Comments { get; set; }
+    public DbSet<Comment> Comment { get; set; }
 
     /// <summary>
     /// Configures the relationships between entities in the database.

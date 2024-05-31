@@ -64,11 +64,5 @@ namespace ST10023767_PROG.Data
         [Column("Category")]
         public string Category { get; set; }
 
-        /// <summary>
-        /// Gets or sets the duration of the resource (applicable for videos).
-        /// </summary>
-        [Required]
-        [Column("Duration")]
-        public TimeSpan Duration { get; set; }
     }
 }//★---♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫---★・。。END OF FILE 。。・★---♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫---★//
