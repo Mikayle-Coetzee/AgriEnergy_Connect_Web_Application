@@ -8,7 +8,11 @@ using ST10023767_PROG.Data;
 
 namespace ST10023767_PROG.Repositories.Interfaces
 {
+    /// <summary>
+    /// Interface for interacting with resource data.
+    /// Extends IRepository for the Resource entity.
+    /// </summary>
     public interface IResourceRepository : IRepository<Resource>
     {
     }
-}
+}//★---♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫---★・。。END OF FILE 。。・★---♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫---★//

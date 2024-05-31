@@ -10,20 +10,20 @@ using System.Collections.Generic;
 namespace ST10023767_PROG.Repositories.Interfaces
 {
     /// <summary>
-    /// 
+    /// Interface for interacting with post data.
     /// </summary>
     public interface IPostRepository
     {
         /// <summary>
-        /// 
+        /// Adds a new post.
         /// </summary>
-        /// <param name="post"></param>
+        /// <param name="post">The post to add.</param>
         void AddPost(PostViewModel post);
 
         /// <summary>
-        /// 
+        /// Retrieves all posts.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of all posts.</returns>
         List<PostViewModel> GetAllPosts();
     }
-}
+}//★---♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫---★・。。END OF FILE 。。・★---♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫---★//

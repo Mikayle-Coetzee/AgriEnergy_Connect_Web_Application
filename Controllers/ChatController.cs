@@ -14,28 +14,28 @@ using System.Threading.Tasks;
 namespace ST10023767_PROG.Controllers
 {
     /// <summary>
-    /// 
+    /// Controller for handling chat-related actions.
     /// </summary>
     public class ChatController : Controller
     {
         /// <summary>
-        /// 
+        /// Database context for interacting with local database.
         /// </summary>
         private readonly LocalDbContext _context;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="ChatController"/> class.
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="context">The database context.</param>
         public ChatController(LocalDbContext context)
         {
             _context = context;
         }
 
         /// <summary>
-        /// 
+        /// Retrieves all chat messages from the database.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A JSON result containing the chat messages.</returns>
         [HttpGet]
         public async Task<IActionResult> GetMessages()
         {
@@ -44,10 +44,10 @@ namespace ST10023767_PROG.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Sends a new chat message to the database.
         /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
+        /// <param name="message">The message to send.</param>
+        /// <returns>An HTTP status code indicating the result of the operation.</returns>
         [HttpPost]
         public async Task<IActionResult> SendMessage([FromBody] ChatMessage message)
         {

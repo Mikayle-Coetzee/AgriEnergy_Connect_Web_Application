@@ -12,15 +12,26 @@ using System.Linq;
 
 namespace ST10023767_PROG.Repositories
 {
+    /// <summary>
+    /// Repository for managing products.
+    /// </summary>
     public class ProductRepository : IProductRepository
     {
         private readonly LocalDbContext _context;
 
+        /// <summary>
+        /// Constructor to initialize the database context.
+        /// </summary>
+        /// <param name="context">Database context.</param>
         public ProductRepository(LocalDbContext context)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// Add a new product to the database.
+        /// </summary>
+        /// <param name="product">Product to add.</param>
         public void AddProduct(ProductsViewModel product)
         {
             // Convert ProductsViewModel to Product entity
@@ -42,6 +53,11 @@ namespace ST10023767_PROG.Repositories
             _context.SaveChanges();
         }
 
+        /// <summary>
+        /// Get products by username.
+        /// </summary>
+        /// <param name="username">Username of the user.</param>
+        /// <returns>List of products.</returns>
         public List<ProductsViewModel> GetProductsByUsername(string username)
         {
             // Convert Product entities to ProductsViewModel
@@ -63,6 +79,11 @@ namespace ST10023767_PROG.Repositories
                 })
                 .ToList();
         }
+
+        /// <summary>
+        /// Get all products from the database.
+        /// </summary>
+        /// <returns>List of products.</returns>
         public List<ProductsViewModel> GetAllProducts()
         {
             // Convert Product entities to ProductsViewModel
@@ -83,6 +104,12 @@ namespace ST10023767_PROG.Repositories
                 })
                 .ToList();
         }
+
+        /// <summary>
+        /// Get a product by its ID.
+        /// </summary>
+        /// <param name="productId">ID of the product.</param>
+        /// <returns>Product.</returns>
         public ProductsViewModel GetProductById(int productId)
         {
             var product = _context.Products.FirstOrDefault(p => p.Id == productId);
@@ -105,12 +132,17 @@ namespace ST10023767_PROG.Repositories
             };
         }
 
+        /// <summary>
+        /// Update an existing product in the database.
+        /// </summary>
+        /// <param name="product">Product to update.</param>
         public void UpdateProduct(ProductsViewModel product)
         {
             var existingProduct = _context.Products.FirstOrDefault(p => p.Id == product.Id);
             if (existingProduct == null)
                 return;
 
+            // Update properties
             existingProduct.ProductName = product.ProductName;
             existingProduct.ProductDescription = product.ProductDescription;
             existingProduct.Category = product.Category;
@@ -124,6 +156,10 @@ namespace ST10023767_PROG.Repositories
             _context.SaveChanges();
         }
 
+        /// <summary>
+        /// Delete a product from the database.
+        /// </summary>
+        /// <param name="product">Product to delete.</param>
         public void DeleteProduct(ProductsViewModel product)
         {
             var existingProduct = _context.Products.FirstOrDefault(p => p.Id == product.Id);
@@ -134,4 +170,4 @@ namespace ST10023767_PROG.Repositories
             _context.SaveChanges();
         }
     }
-}
+}//★---♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫---★・。。END OF FILE 。。・★---♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫---★//

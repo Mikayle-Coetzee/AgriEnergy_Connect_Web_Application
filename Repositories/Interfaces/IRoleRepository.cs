@@ -8,7 +8,11 @@ using ST10023767_PROG.Data;
 
 namespace ST10023767_PROG.Repositories.Interfaces
 {
+    /// <summary>
+    /// Interface for interacting with role data.
+    /// Extends IRepository for the Role entity.
+    /// </summary>
     public interface IRoleRepository : IRepository<Role>
     {
     }
-}
+}//★---♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫---★・。。END OF FILE 。。・★---♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫---★//

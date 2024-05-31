@@ -16,22 +16,40 @@ using System.Linq;
 
 namespace ST10023767_PROG.Controllers
 {
+    /// <summary>
+    /// Controller for managing products.
+    /// </summary>
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepository;
         private readonly IUserRepository _userRepository;
 
+        /// <summary>
+        /// Constructor to initialize repositories.
+        /// </summary>
+        /// <param name="productRepository">Product repository.</param>
+        /// <param name="userRepository">User repository.</param>
         public ProductController(IProductRepository productRepository, IUserRepository userRepository)
         {
             _productRepository = productRepository;
             _userRepository = userRepository;
         }
 
+        /// <summary>
+        /// Action method for adding a product.
+        /// </summary>
+        /// <returns></returns>
         public IActionResult AddProduct()
         {
             return View();
         }
 
+        /// <summary>
+        /// Post action method for adding a product.
+        /// </summary>
+        /// <param name="model">Product view model.</param>
+        /// <param name="image">Product image.</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult AddProduct(ProductsViewModel model, IFormFile image)
         {
@@ -47,19 +65,26 @@ namespace ST10023767_PROG.Controllers
             model.UploadedDate = DateTime.Now;
             model.Username = ServiceLocator.MainViewModel.CurrentUser.Username;
 
+            // Add product
             _productRepository.AddProduct(model);
             TempData["SuccessMessage"] = "Product added successfully.";
-
 
             return RedirectToAction("ViewMyProducts");
         }
 
+        /// <summary>
+        /// Action method for viewing products.
+        /// </summary>
+        /// <param name="filtered">Filtered products.</param>
+        /// <returns></returns>
         public IActionResult ViewMyProducts(List<ProductsViewModel> filtered)
         {
+            // Check if user is authenticated
             if (ServiceLocator.MainViewModel.CurrentUser != null)
             {
                 var username = ServiceLocator.MainViewModel.CurrentUser.Username;
 
+                // Check user type
                 if (ServiceLocator.MainViewModel.CurrentUser.UserTypeID == 1)
                 {
                     var products = _productRepository.GetProductsByUsername(username);
@@ -82,8 +107,14 @@ namespace ST10023767_PROG.Controllers
             return View();
         }
 
-
-
+        /// <summary>
+        /// Action method for applying filters to products.
+        /// </summary>
+        /// <param name="username">Username filter.</param>
+        /// <param name="startDate">Start date filter.</param>
+        /// <param name="endDate">End date filter.</param>
+        /// <param name="category">Category filter.</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult ApplyFilters(string username, DateTime? startDate, DateTime? endDate, string category)
         {
@@ -112,24 +143,25 @@ namespace ST10023767_PROG.Controllers
             return PartialView("_ProductListPartial", products);
         }
 
-
+        /// <summary>
+        /// Action method for deleting a product.
+        /// </summary>
+        /// <param name="id">ID of the product to delete.</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult DeleteProduct(int id)
         {
             var product = _productRepository.GetProductById(id);
             if (product == null)
             {
-
                 TempData["ErrorMessage"] = "Product can not be deleted";
-
-                return NotFound(); 
+                return NotFound();
             }
 
             _productRepository.DeleteProduct(product);
             TempData["SuccessMessage"] = "Product deleted successfully.";
 
-
-            return Ok(); 
+            return Ok();
         }
     }
-}
+}//★---♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫---★・。。END OF FILE 。。・★---♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫---★//

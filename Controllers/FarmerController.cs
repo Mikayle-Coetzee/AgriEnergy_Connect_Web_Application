@@ -15,36 +15,21 @@ using ST10023767_PROG.Repositories;
 namespace ST10023767_PROG.Controllers
 {
     /// <summary>
-    /// 
+    /// Controller for managing farmer-related actions.
     /// </summary>
     public class FarmerController : Controller
     {
-        /// <summary>
-        /// 
-        /// </summary>
         private readonly ILogger<FarmerController> _logger;
-
-        /// <summary>
-        /// 
-        /// </summary>
         private readonly IUserRepository _userRepository;
-
-        /// <summary>
-        /// 
-        /// </summary>
         private readonly ValidationClass _validate = new();
-
-        /// <summary>
-        /// 
-        /// </summary>
         private readonly WorkerClass _workerClass;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="FarmerController"/> class.
         /// </summary>
-        /// <param name="logger"></param>
-        /// <param name="userRepository"></param>
-        /// <param name="roleRepository"></param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="userRepository">The user repository.</param>
+        /// <param name="roleRepository">The role repository.</param>
         public FarmerController(ILogger<FarmerController> logger, IUserRepository userRepository, IResourceRepository roleRepository)
         {
             _logger = logger;
@@ -53,13 +38,13 @@ namespace ST10023767_PROG.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Displays the page for adding a new farmer.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The view for adding a new farmer.</returns>
         public IActionResult AddFarmer()
         {
+            // Retrieve pending farmers and all farmers from repository
             var pendingFarmers = _userRepository.GetPendingFarmers();
-
             var model = new FarmerViewModel
             {
                 PendingFarmers = pendingFarmers.Select(user => new Farmer
@@ -73,7 +58,7 @@ namespace ST10023767_PROG.Controllers
                     FarmType = user.FarmType,
                     Username = user.Username,
                     Password = "",
-                    ConfirmPassword = "" 
+                    ConfirmPassword = ""
                 }).ToList(),
                 AllFarmers = _userRepository.GetAllFarmers().Select(user => new Farmer
                 {
@@ -94,18 +79,20 @@ namespace ST10023767_PROG.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Adds or edits a farmer.
         /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
+        /// <param name="model">The farmer model.</param>
+        /// <returns>The action result.</returns>
         [HttpPost]
         public IActionResult AddOrEditFarmer(Farmer model)
         {
+            // If model is valid
             if (ModelState.IsValid)
             {
                 var existingFarmer = _userRepository.GetFarmerById(model.FarmerID);
                 if (existingFarmer != null)
                 {
+                    // Update existing farmer
                     existingFarmer.Name = model.Name;
                     existingFarmer.Surname = model.Surname;
                     existingFarmer.IDNumber = model.IDNumber;
@@ -117,6 +104,7 @@ namespace ST10023767_PROG.Controllers
                 }
                 else
                 {
+                    // If new farmer, validate and add
                     if (_validate.Validate_String(model.Name) &&
                         _validate.Validate_String(model.Surname) &&
                         _validate.Validate_String(model.Username) &&
@@ -127,13 +115,14 @@ namespace ST10023767_PROG.Controllers
                                             1, model.Username, model.FarmLocation, model.FarmType,
                                             model.Password);
 
-                        TempData["SuccessMessage"] = "Farmer added successfully."; 
+                        TempData["SuccessMessage"] = "Farmer added successfully.";
 
                         return RedirectToAction("AddFarmer", "Farmer");
                     }
                 }
             }
 
+            // If model is not valid, return to add farmer page
             return View("AddFarmer", new FarmerViewModel
             {
                 PendingFarmers = _userRepository.GetPendingFarmers().Select(user => new Farmer
@@ -162,10 +151,10 @@ namespace ST10023767_PROG.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Approves a farmer request.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">The ID of the farmer.</param>
+        /// <returns>The action result.</returns>
         [HttpPost]
         public IActionResult ApproveFarmer(int id)
         {
@@ -180,10 +169,10 @@ namespace ST10023767_PROG.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Retrieves a farmer by ID.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">The ID of the farmer.</param>
+        /// <returns>A JSON result containing the farmer.</returns>
         [HttpGet]
         public JsonResult GetFarmer(int id)
         {
@@ -196,27 +185,23 @@ namespace ST10023767_PROG.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Deletes a farmer.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-
+        /// <param name="id">The ID of the farmer.</param>
+        /// <returns>The action result.</returns>
         [HttpPost]
         public IActionResult DeleteFarmer(int id)
         {
             var farmer = _userRepository.GetFarmerById(id);
             if (farmer == null)
             {
-
                 TempData["ErrorMessage"] = "Farmer can not be deleted.";
-
-                return NotFound(); 
+                return NotFound();
             }
 
             _userRepository.DeleteFarmer(farmer);
             TempData["SuccessMessage"] = "Farmer deleted successfully.";
             return Ok();
         }
-
     }
 }//★---♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫---★・。。END OF FILE 。。・★---♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫---★//

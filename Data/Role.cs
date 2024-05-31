@@ -12,15 +12,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace ST10023767_PROG.Data;
+    /// <summary>
+    /// Represents the Role entity stored in the "Roles" table.
+    /// </summary>
+    [Table("Roles")]
+    public partial class Role
+    {
+        /// <summary>
+        /// The primary key for the Role entity.
+        /// </summary>
+        [Key]
+        [Column("Id")]
+        public int Id { get; set; }
 
-[Table("Roles")]
-public partial class Role
-{
-    [Key]
-    [Column("Id")]
-    public int Id { get; set; }
-
-    [Column("Role", TypeName = "varchar(50)")]
-    public string RoleName { get; set; }
-}//★---♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫---★・。。END OF FILE 。。・★---♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫---★//
+        /// <summary>
+        /// The name of the role.
+        /// </summary>
+        [Column("Role", TypeName = "varchar(50)")]
+        public string RoleName { get; set; }
+    }//★---♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫---★・。。END OF FILE 。。・★---♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫---★//
 

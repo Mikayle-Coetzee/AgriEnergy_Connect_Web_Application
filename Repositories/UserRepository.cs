@@ -13,24 +13,46 @@ using System.Linq;
 
 public class UserRepository : RepositoryBase<User>, IUserRepository
 {
+    /// <summary>
+    /// Constructor for UserRepository.
+    /// </summary>
+    /// <param name="context">The database context.</param>
     public UserRepository(LocalDbContext context) : base(context) { }
 
+    /// <summary>
+    /// Retrieves a user by username.
+    /// </summary>
+    /// <param name="username">The username to search for.</param>
+    /// <returns>The user with the specified username.</returns>
     public User GetUserByUsername(string username)
     {
         return this._dbSet.FirstOrDefault(u => u.Username == username);
     }
 
+    /// <summary>
+    /// Checks if a user exists by username.
+    /// </summary>
+    /// <param name="username">The username to check.</param>
+    /// <returns>True if the user exists, otherwise false.</returns>
     public bool UserExists(string username)
     {
         return this._dbSet.Any(u => u.Username == username);
     }
 
+    /// <summary>
+    /// Adds a new user.
+    /// </summary>
+    /// <param name="user">The user to add.</param>
     public void Add(User user)
     {
         this._dbSet.Add(user);
         _context.SaveChanges();
     }
 
+    /// <summary>
+    /// Retrieves pending farmers.
+    /// </summary>
+    /// <returns>A list of pending farmers.</returns>
     public List<RegisterViewModel> GetPendingFarmers()
     {
         return this._dbSet.Where(f => f.UserTypeID == 1 && f.RequestApproved == "false")
@@ -51,6 +73,11 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
             .ToList();
     }
 
+    /// <summary>
+    /// Retrieves a farmer by ID.
+    /// </summary>
+    /// <param name="id">The ID of the farmer.</param>
+    /// <returns>The farmer with the specified ID.</returns>
     public RegisterViewModel GetFarmerById(int id)
     {
         var user = this._dbSet.FirstOrDefault(u => u.Id == id && u.UserTypeID == 1);
@@ -72,6 +99,10 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
         };
     }
 
+    /// <summary>
+    /// Updates a farmer.
+    /// </summary>
+    /// <param name="user">The farmer to update.</param>
     public void UpdateFarmer(RegisterViewModel user)
     {
         //this._dbSet.Update(user);
@@ -79,6 +110,10 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
     }
 
 
+    /// <summary>
+    /// Deletes a farmer.
+    /// </summary>
+    /// <param name="user">The farmer to delete.</param>
     public void DeleteFarmer(RegisterViewModel user)
     {
         var existingUser = _context.Users.FirstOrDefault(p => p.Id == user.Id);
@@ -89,6 +124,10 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
         _context.SaveChanges();
     }
 
+    /// <summary>
+    /// Retrieves all farmers.
+    /// </summary>
+    /// <returns>A list of all farmers.</returns>
     public List<RegisterViewModel> GetAllFarmers()
     {
         return _context.Users
@@ -109,4 +148,4 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
             })
             .ToList();
     }
-}
+}//★---♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫---★・。。END OF FILE 。。・★---♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫---★//

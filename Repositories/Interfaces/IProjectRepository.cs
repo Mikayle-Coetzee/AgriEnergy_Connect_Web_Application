@@ -11,23 +11,26 @@ using System.Collections.Generic;
 namespace ST10023767_PROG.Repositories.Interfaces
 {
     /// <summary>
-    /// 
+    /// Interface for interacting with project data.
     /// </summary>
     public interface IProjectRepository
     {
         /// <summary>
-        /// 
+        /// Adds a new project.
         /// </summary>
-        /// <param name="post"></param>
-        void AddProject(ProjectViewModel post);
+        /// <param name="project">The project to add.</param>
+        void AddProject(ProjectViewModel project);
 
         /// <summary>
-        /// 
+        /// Retrieves all projects.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of all projects.</returns>
         List<ProjectViewModel> GetAllProjects();
 
+        /// <summary>
+        /// Adds a comment to a project.
+        /// </summary>
+        /// <param name="comment">The comment to add.</param>
         void AddComment(Comment comment);
-
     }
-}
+}//★---♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫---★・。。END OF FILE 。。・★---♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫---★//

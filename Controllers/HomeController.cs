@@ -15,11 +15,12 @@ using System.Drawing;
 namespace ST10023767_PROG.Controllers
 {
     /// <summary>
-    /// 
+    /// Controller responsible for handling home-related actions.
     /// </summary>
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+
         /// <summary>
         /// Validation class instance for string and password validation.
         /// </summary>
@@ -31,53 +32,57 @@ namespace ST10023767_PROG.Controllers
         private readonly WorkerClass workerClass;
 
         /// <summary>
-        /// 
+        /// Constructor for HomeController.
         /// </summary>
-        /// <param name="logger"></param>
-        /// <param name="userRepository"></param>
-        /// <param name="roleRepository"></param>
+        /// <param name="logger">Logger instance for logging.</param>
+        /// <param name="userRepository">User repository instance.</param>
+        /// <param name="roleRepository">Role repository instance.</param>
         public HomeController(ILogger<HomeController> logger, IUserRepository userRepository, IResourceRepository roleRepository)
         {
             _logger = logger;
             workerClass = new WorkerClass(userRepository, roleRepository);
         }
-        
+
         /// <summary>
-        /// 
+        /// Action method for displaying the home page.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the index view.</returns>
         public IActionResult Index()
         {
             return View();
         }
 
         /// <summary>
-        /// 
+        /// Action method for displaying the login page.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the login view.</returns>
         public IActionResult Login()
         {
             return View();
         }
 
         /// <summary>
-        /// 
+        /// Action method for handling login post request.
         /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
+        /// <param name="model">Login view model containing user credentials.</param>
+        /// <returns>Returns redirection to the index action or login view with error message.</returns>
         [HttpPost]
         public IActionResult Login(RegisterViewModel model)
         {
+            // Validate user credentials
             if (validate.Validate_String(model.Username) && validate.Validate_Password(model.Password))
             {
                 var loginResult = workerClass.Login(model.Username, model.Password);
 
                 if (loginResult == 0)
                 {
+                    // Retrieve user details
                     var currentUser = workerClass.GetUserByUsername(model.Username);
 
+                    // Set current user in service locator
                     ServiceLocator.MainViewModel.CurrentUser = new RegisterViewModel(currentUser);
 
+                    // Redirect based on user approval and type
                     if (ServiceLocator.MainViewModel.CurrentUser.RequestApproved == "true" ||
                         ServiceLocator.MainViewModel.CurrentUser.UserTypeID == 2)
                     {
@@ -107,11 +112,10 @@ namespace ST10023767_PROG.Controllers
         }
 
 
-
         /// <summary>
-        /// 
+        /// Action method for displaying the register page.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the register view.</returns>
         public IActionResult Register()
         {
             return View();
@@ -170,62 +174,46 @@ namespace ST10023767_PROG.Controllers
             return View(model);
         }
 
-
         /// <summary>
-        /// 
+        /// Action method for displaying the privacy page.
         /// </summary>
-        /// <returns></returns>
-        public IActionResult Password()
-        {
-            return View();
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public IActionResult LayoutSidenavLight()
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the privacy view.</returns>
         public IActionResult Privacy()
         {
             return View();
         }
 
+        /// <summary>
+        /// Action method for displaying the about us page.
+        /// </summary>
+        /// <returns>Returns the about us view.</returns>
         public IActionResult AboutUs()
         {
             return View();
         }
 
         /// <summary>
-        /// 
+        /// Action method for displaying the farming hub page.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the farming hub view.</returns>
         public IActionResult FarmingHub()
         {
             return View();
         }
 
         /// <summary>
-        /// 
+        /// Action method for displaying the educational resource page.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the educational resource view.</returns>
         public IActionResult EducationalResource()
         {
             return View();
         }
 
         /// <summary>
-        /// 
+        /// Action method for displaying the error page.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the error view.</returns>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

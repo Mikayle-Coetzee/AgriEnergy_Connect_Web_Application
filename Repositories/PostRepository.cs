@@ -16,13 +16,22 @@ namespace ST10023767_PROG.Repositories
     {
         private readonly LocalDbContext _context;
 
+        /// <summary>
+        /// Constructor to inject the database context
+        /// </summary>
+        /// <param name="context"></param>
         public PostRepository(LocalDbContext context)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// Method to add a new post
+        /// </summary>
+        /// <param name="post"></param>
         public void AddPost(PostViewModel post)
         {
+            // Create a new Post entity from the ViewModel
             var newPost = new Post
             {
                 MessageContent = post.MessageContent,
@@ -32,12 +41,18 @@ namespace ST10023767_PROG.Repositories
                 DatePublished = post.DatePublished
             };
 
+            // Add the new post to the database context and save changes
             _context.Posts.Add(newPost);
             _context.SaveChanges();
         }
 
+        /// <summary>
+        /// Method to get all posts
+        /// </summary>
+        /// <returns></returns>
         public List<PostViewModel> GetAllPosts()
         {
+            // Select all posts from the database context and convert them to PostViewModel objects
             return _context.Posts
                 .Select(p => new PostViewModel
                 {
@@ -51,4 +66,4 @@ namespace ST10023767_PROG.Repositories
                 .ToList();
         }
     }
-}
+}//★---♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫---★・。。END OF FILE 。。・★---♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫---★//

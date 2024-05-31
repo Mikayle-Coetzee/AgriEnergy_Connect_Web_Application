@@ -57,6 +57,11 @@ namespace ST10023767_PROG.Repositories
             return _dbSet.Find(id);
         }
 
+        /// <summary>
+        /// Check if an entity with the given identifier exists in the repository.
+        /// </summary>
+        /// <param name="id">The unique identifier</param>
+        /// <returns>True if the entity exists, otherwise false</returns>
         public bool Exists(int id)
         {
             return _dbSet.Find(id) != null;
@@ -150,20 +155,33 @@ namespace ST10023767_PROG.Repositories
             _context.Dispose();
         }
 
+        /// <summary>
+        /// Find all entities without tracking changes.
+        /// </summary>
+        /// <returns>An IQueryable collection of entities</returns>
         public IQueryable<TEntity> FindAll()
         {
             return _dbSet.AsNoTracking();
         }
 
+        /// <summary>
+        /// Find entities by a specified condition without tracking changes.
+        /// </summary>
+        /// <param name="expression">The condition to filter entities</param>
+        /// <returns>An IQueryable collection of entities</returns>
         public IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression)
         {
             return _dbSet.Where(expression).AsNoTracking();
         }
 
+        /// <summary>
+        /// Create a new entity in the repository.
+        /// </summary>
+        /// <param name="entity">The entity to create</param>
         public void Create(TEntity entity)
         {
             _dbSet.Add(entity);
             SaveChanges();
         }
     }
-}
+}//★---♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫---★・。。END OF FILE 。。・★---♫ ♬:;;;:♬ ♫:;;;: ♫ ♬:;;;:♬ ♫:;;;: ♫---★//
