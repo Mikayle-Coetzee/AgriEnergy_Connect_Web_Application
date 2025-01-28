@@ -1,4 +1,4 @@
-# ST10023767_PROG (Agri-Energy Connect Web Application)
+# Agri-Energy Connect Web Application
 
 We were given a poe to create a Agri-Energy Connect web application prototype to bridge the gap between the agricultural sector and green energy technology providers in South Africa. This initiative aims to create a digital ecosystem where farmers, green energy experts, and enthusiasts can collaborate, share resources, and innovate in the realms of sustainable agriculture and renewable energy.
 
